@@ -1,0 +1,9 @@
+CREATE TABLE patients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    age INTEGER NOT NULL,
+    gender TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    department TEXT NOT NULL,
+    doctor TEXT NOT NULL
+);
