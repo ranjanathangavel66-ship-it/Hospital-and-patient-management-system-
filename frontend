@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Management System</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        header {
+            background: #1976d2;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #1976d2;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Hospital and Patient Management System</h1>
+    <p>CRUD-Based Web Application</p>
+</header>
+
+<div class="container">
+
+    <h2>Add Patient</h2>
+
+    <input id="name" placeholder="Patient Name">
+    <input id="age" type="number" placeholder="Age">
+
+    <select id="gender">
+        <option value="">Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+    </select>
+
+    <input id="phone" placeholder="Phone">
+    <input id="department" placeholder="Department">
+    <input id="doctor" placeholder="Doctor">
+
+    <button onclick="addPatient()">Add Patient</button>
+
+    <h2>Patient Records</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Department</th>
+                <th>Doctor</th>
+            </tr>
+        </thead>
+
+        <tbody id="patientTable"></tbody>
+    </table>
+
+</div>
+
+<script>
+async function addPatient() {
+
+    let patient = {
+        name: document.getElementById("name").value,
+        age: document.getElementById("age").value,
+        gender: document.getElementById("gender").value,
+        phone: document.getElementById("phone").value,
+        department: document.getElementById("department").value,
+        doctor: document.getElementById("doctor").value
+    };
+
+    await fetch("/patients", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(patient)
+    });
+
+    loadPatients();
+}
+
+async function loadPatients() {
+
+    let response = await fetch("/patients");
+    let patients = await response.json();
+
+    let table = document.getElementById("patientTable");
+    table.innerHTML = "";
+
+    patients.forEach(p => {
+        table.innerHTML += `
+        <tr>
+            <td>${p.id}</td>
+            <td>${p.name}</td>
+            <td>${p.age}</td>
+            <td>${p.gender}</td>
+            <td>${p.phone}</td>
+            <td>${p.department}</td>
+            <td>${p.doctor}</td>
+        </tr>`;
+    });
+}
+
+loadPatients();
+</script>
+
+</body>
+</html>
